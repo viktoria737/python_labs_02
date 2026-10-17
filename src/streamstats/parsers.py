@@ -3,7 +3,7 @@ import json
 from collections.abc import Generator
 from pathlib import Path
 
-from .errors import InvalidEventError, UnsupportedFormatError
+from .errors import InvalidEventError, StreamStatsError, UnsupportedFormatError
 from .models import Event, validate_event
 
 
@@ -28,7 +28,7 @@ def parse_csv(file_path: Path):
             try:
                 event = validate_event(row, reader.line_num, file_path.name)
                 yield event, reader.line_num
-            except InvalidEventError as e:
+            except StreamStatsError as e:
                 yield e, reader.line_num
 
 
@@ -49,5 +49,5 @@ def parse_jsonl(file_path: Path):
             try:
                 event = validate_event(data, line_num, file_path.name)
                 yield event, line_num
-            except InvalidEventError as e:
+            except StreamStatsError as e:
                 yield e, line_num

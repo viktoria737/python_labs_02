@@ -4,7 +4,7 @@ import sys
 from pathlib import Path
 
 from .analysis import StatsAggregator
-from .errors import CLIConfigError, InvalidEventError, StreamStatsError
+from .errors import CLIConfigError, StreamStatsError
 from .parsers import parse_file
 from .report import generate_report
 
@@ -56,7 +56,7 @@ def main():
             logger.info(f"Начинается обработка файла {input_file}")
 
             for item, line_num in parse_file(input_file, args.format):
-                if isinstance(item, InvalidEventError):
+                if isinstance(item, StreamStatsError):
                     if args.skip_invalid:
                         logger.warning(f"В строке {line_num} пропущено: {item}")
                         aggregator.skipped_lines += 1
